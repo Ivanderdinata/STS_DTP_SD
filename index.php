@@ -104,22 +104,12 @@ require_once 'database/koneksi.php';
                     4. Jangan mengetik data database secara manual di HTML.
                     -->
                     <?php
-                    $servername = "localhost";
-                    $username = "root";
-                    $password = "";
-                    $dbname = "db_laporan_fasilitas";
-
-                    $conn = new mysqli($servername, $username, $password, $dbname);
-
-                    if ($conn->connect_error) {
-                        die("Connection failed: " . $conn->connect_error);
-                    }
-
                     $sql = "SELECT * FROM laporan_kerusakan";
-                    $result = $conn->query($sql);
+                    $stmt = $pdo->query($sql);
+                    $laporan = $stmt->fetchAll();
 
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
+                    if (!empty($laporan)) {
+                        foreach ($laporan as $row) {
                             echo "<tr>";
                             echo "<td>" . $row["id_laporan"] . "</td>";
                             echo "<td>" . $row["nama_fasilitas"] . "</td>";
@@ -133,8 +123,6 @@ require_once 'database/koneksi.php';
                     } else {
                         echo "<tr><td colspan='7'>Belum ada data ditampilkan.</td></tr>";
                     }
-
-                    $conn->close();
                     ?>
                 </tbody>
             </table>
